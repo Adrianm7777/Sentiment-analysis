@@ -1,17 +1,31 @@
-import React from "react";
+"use client";
 
-const page = () => {
+import { FormEvent, useState } from "react";
+
+const Page = () => {
+  const [inputText, setInputText] = useState("");
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    console.log("Tekst do analizy:", inputText);
+  };
+
   return (
     <div className="flex justify-center items-center w-dvw h-dvh">
       <div className="p-6 max-w-lg mx-auto w-1/2">
         <h1 className="text-2xl font-bold mb-4 text-center">
           Analiza Sentymentu
         </h1>
-        <form className="flex-col justify-center items-center flex">
+        <form
+          className="flex-col justify-center items-center flex"
+          onSubmit={handleSubmit}
+        >
           <textarea
+            value={inputText}
             placeholder="Wpisz tekst, który chcesz przeanalizować..."
             rows={6}
             className="w-full p-4 text-lg border rounded-md"
+            onChange={(e) => setInputText(e.target.value)}
           />
           <button
             type="submit"
@@ -25,4 +39,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
