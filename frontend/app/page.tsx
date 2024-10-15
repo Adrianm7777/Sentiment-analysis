@@ -54,6 +54,7 @@ const Page = () => {
             Przeanalizuj
           </button>
         </form>
+        {result && <div className="mt-4 text-center">{result}</div>}
       </div>
     </div>
   );
