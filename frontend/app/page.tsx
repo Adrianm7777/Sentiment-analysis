@@ -3,11 +3,31 @@
 import { FormEvent, useState } from "react";
 
 const Page = () => {
-  const [inputText, setInputText] = useState("");
+  const [text, setText] = useState("");
+  const [result, setResult] = useState("");
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    console.log("Tekst do analizy:", inputText);
+
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/analyze/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ text }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+      setResult(`Sentiment: ${data.sentiment}, Polarity: ${data.polarity}`);
+    } catch (error) {
+      console.error("Error analyzing text:", error);
+      setResult("Error occurred while analyzing text.");
+    }
   };
 
   return (
@@ -21,11 +41,11 @@ const Page = () => {
           onSubmit={handleSubmit}
         >
           <textarea
-            value={inputText}
+            value={text}
             placeholder="Wpisz tekst, który chcesz przeanalizować..."
             rows={6}
             className="w-full p-4 text-lg border rounded-md"
-            onChange={(e) => setInputText(e.target.value)}
+            onChange={(e) => setText(e.target.value)}
           />
           <button
             type="submit"
