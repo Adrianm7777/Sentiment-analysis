@@ -2,9 +2,19 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .serializers import SentimentSerializers
+from textblob import TextBlob
 
 def analyze_sentiment(text):
-    return {'sentiment':'neutral'}
+    blob = TextBlob(text)
+    sentiment_score = blob.sentiment.polarity
+    if sentiment_score > 0:
+        sentiment = 'positive'
+    elif sentiment_score < 0:
+        sentiment = 'negative'
+    else: sentiment ='neutral'
+
+    return {"sentiment": sentiment, "polarity": sentiment_score}
+    
 
 @api_view(['POST'])
 def analyze_text(request):
