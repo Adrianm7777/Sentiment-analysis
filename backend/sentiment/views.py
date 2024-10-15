@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from serializers import SentimentSerializers
+from .serializers import SentimentSerializers
 
 def analyze_sentiment(text):
     return {'sentiment':'neutral'}
